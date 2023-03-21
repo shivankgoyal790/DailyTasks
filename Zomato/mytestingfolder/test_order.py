@@ -1,12 +1,31 @@
 from order import Order
+from user import User
+from restaurant import Restaurant
+from delivery_boy import Deliveryboy
+import pytest
 
 
-def test_createobj():
-    order = Order('113', "123", "1234", "2356",
-                  [], 100)
+@pytest.fixture()
+def order():
+    user = User("124", "shivnak", "Asfg", "7894561230",
+                "goyal@gmail.com", "12345678")
+    rest = Restaurant("1245", "sam", "asfdg", "dominos@gmail.com", "12345678")
+    agent = Deliveryboy("467", "rakesh", "7894561230",
+                        "sam@gmail.com", "12345678")
+    order = Order('113', user, rest, agent,
+                  100)
+    return order
 
 
-def test_showobj():
-    order = Order('113', "123", "1234", "2356",
-                  [], 100)
+# def test_createobj():
+#     user = User("124", "shivnak", "Asfg", "7894561230",
+#                 "goyal@gmail.com", "12345678")
+#     rest = Restaurant("1245", "sam", "asfdg", "dominos@gmail.com", "12345678")
+#     agent = Deliveryboy("467", "rakesh", "7894561230",
+#                         "sam@gmail.com", "12345678")
+#     order = Order('113', user, rest, agent,
+#                   100)
+
+
+def test_showobj(order):
     order.show_order()

@@ -1,12 +1,28 @@
+from colorama import Fore, Back, Style
+
+
 class Order:
-    def __init__(self, id, restid, customerid, delivery_boy_id, price, foodlist):
+    def __init__(self, id, user, rest, agent, price):
         self.id = id
-        self.restid = restid
-        self.customerid = customerid
-        self.delivery_boy_id = delivery_boy_id
-        self.itemlist = foodlist
+        self.rest = rest
+        self.user = user
+        self.agent = agent
+        self.itemlist = user.foodlist
         self.totalpayment = price
         self.status = "not delivered"
 
     def show_order(self):
-        pass
+        print(Back.YELLOW)
+        print("\nORDER SUMMARY !!")
+        print("\nORDER ID :  ", self.id)
+        print("RESTAURANT NAME :  ", self.rest.name)
+        print("DELIVER TO :  ", self.user.name)
+        print("DELIVERY LOCATION :", self.user.address)
+        print("DELIVERY BOY : ", self.agent.name)
+        print("TOTAL BILL :  ", self.totalpayment)
+        print("STATUS :", self.status)
+        print(Style.RESET_ALL)
+        print("\n\nITEMS ORDERED")
+
+        for i in self.itemlist:
+            i.display_menuitem()

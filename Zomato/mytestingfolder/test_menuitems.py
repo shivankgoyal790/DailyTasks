@@ -1,15 +1,25 @@
 from menuitems import Menuitems
 from item import Item
+import unittest
+from unittest.mock import patch
 
 
-def test_can_create_obj():
-    item = Item("1", "Dosa", 2)
-    Menuitem = Menuitems(item, 100)
-    assert True
+# print ke andar print mock
+class Test_Menuitems(unittest.TestCase):
+
+    @patch.object(Item, 'display_item')
+    def test_display_menuitem(self, mock_display_item):
+        mock_display_item.side_effect = lambda price, rating, no_of_ratings: None
+        item = Item("1", "Dosa")
+        Menuitem = Menuitems(item, 100)
+
+        Menuitem.display_menuitem()
+        mock_display_item.assert_called_once_with(100, 0, 0)
+
+    def test_can_create_obj(self):
+        item = Item("1", "Dosa")
+        Menuitem = Menuitems(item, 100)
 
 
-def test_candisplayitem():
-    item = Item("1", "Dosa", 2)
-    Menuitem = Menuitems(item, 100)
-    Menuitem.display_menuitem()
-    assert True
+if __name__ == '__main__':
+    unittest.main()

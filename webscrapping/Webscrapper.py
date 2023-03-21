@@ -23,7 +23,6 @@ class WebScapper():
 
 class ImageScrapper(WebScapper):
     def __init__(self, url):
-        url = checker(url)
         self.url = url
 
     def WebScrapping(self):
@@ -39,7 +38,6 @@ class ImageScrapper(WebScapper):
 
 class IconScrapper(WebScapper):
     def __init__(self, url):
-        url = checker(url)
         self.url = url
 
     def WebScrapping(self):
@@ -61,27 +59,47 @@ class StoreInFile():
             f.write(i+"\n"+"\n")
 
 
+class FactoryScrape():
+    def __init__(self, choice, url):
+        self.ch = choice
+        self.url = url
+
+    def factorymethod(self):
+        if (self.ch == '1'):
+            Image = ImageScrapper(self.url)
+            return Image.WebScrapping()
+        elif (self.ch == '2'):
+            Icons = IconScrapper(self.url)
+            return Icons.WebScrapping()
+
+
+class FactoryStore():
+    def factorymethod(self, ch, listofscrapedurl):
+        if (ch == '1'):
+            x = input("Enter File Name")
+            fileobj = StoreInFile(x)
+            fileobj.StoreData(listofscrapedurl)
+        else:
+            print("thank You")
+
+
 def main():
+
     url = input("Enter The URL To scrap")
+    url = checker(url)
+
     print("1. For Image Scrapping")
     print("2 for icon Scrapping")
     ch = input("which type of scrapping you want to do")
-    listofscrapedurl = []
-    if (ch == '1'):
-        Image = ImageScrapper(url)
-        listofscrapedurl = Image.WebScrapping()
-    elif (ch == '2'):
-        Icons = IconScrapper(url)
-        listofscrapedurl = Icons.WebScrapping()
+
+    fact_obj = FactoryScrape(ch, url)
+    listofscrapedurl = fact_obj.factorymethod()
 
     print("Enter 1 to write in a file or 2 to exit")
     ch = input()
-    if (ch == '1'):
-        x = input("Enter File Name")
-        fileobj = StoreInFile(x)
-        fileobj.StoreData(listofscrapedurl)
-    else:
-        print("thank You")
+
+    fact_fileobj = FactoryStore()
+    fact_fileobj.factorymethod(ch, listofscrapedurl)
 
 
 main()

@@ -4,8 +4,15 @@ class Menu:
         self.menuitemlist = []
         self.rest_id = rest_id
 
+    def find_item(self, index):
+        if (index > len(self.menuitemlist)):
+            return 0
+        return self.menuitemlist[index - 1]
+
     def display_allitems(self):
-        print(self.id)
-        for item in self.menuitemlist:
-            print(item.item.display_item())
-            print(item.price)
+        if (len(self.menuitemlist) == 0):
+            print("NO ITEMS IN THE MENU")
+        else:
+            for item in self.menuitemlist:
+                print(self.menuitemlist.index(item) + 1, end="  ")
+                item.display_menuitem()

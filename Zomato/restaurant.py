@@ -1,35 +1,52 @@
 from menu import Menu
 from item import Item
 from menuitems import Menuitems
+import random
+from colorama import Back, Style
 
 
 class Restaurant:
 
-    def __init__(self, id, name, address):
+    def __init__(self, id, name, address, email, password):
         self.rest_id = id
         self.name = name
         self.address = address
+        self.email = email
+        self.password = password
         self.status = "open"
-        self.rating = 5
+        self.rating = 0
+        self.no_of_ratings = 0
         self.curr_orders = []
 
-    def create_menu(self, id):
-        mymenu = Menu(id, self.rest_id)
+    def create_menu(self):
+        mymenu = Menu(random.randint(1000, 2000), self.rest_id)
         self.menu = mymenu
 
     def create_new_menuitem(self):
-        item = Item(1, "Shahi Paneer", 5)
-        price = int(input("enter the price of the dish"))
+        name = input("\nENTER NAME OF THE DISH ")
+        price = int(input("ENTER PRICE OF DISH "))
+        item = Item(random.randint(1, 1000), name)
         newitem = Menuitems(item, price)
         self.menu.menuitemlist.append(newitem)
+        print("\nITEM SUCCESSFULLY ADDED")
+        return newitem
 
     def add_item_from_existing_list(self, item, price):
         newitem = Menuitems(item, price)
         self.menu.menuitemlist.append(newitem)
+        print("NEW ITEM ADDED TO MENU")
 
     def deleteitem_from_menu(self):
-        dish = input("Enter the name of dish to delete")
-        filter(lambda x: x.item.name != dish, self.menu.menuitemlist)
+        if (len(self.menu.menuitemlist) == 0):
+            print(Back.YELLOW)
+            print("NOTHING TO REMOVE")
+            print(Style.RESET_ALL)
+            return 0
+        else:
+            dish = int(input("\nENTER THE INDEX OF ITEM TO DELETE"))
+            item = self.menu.menuitemlist[dish - 1]
+            self.menu.menuitemlist.remove(item)
+            return 1
 
     def update_status(self):
         if (self.status == "open"):
@@ -38,5 +55,21 @@ class Restaurant:
             self.status = "open"
 
     def check_orders(self):
-        for i in self.curr_orders:
-            print(i)
+        if (len(self.curr_orders) == 0):
+            print(Back.YELLOW)
+            print("\n\nNO CURRENT ORDERS\n")
+            print(Style.RESET_ALL)
+        else:
+            for i in self.curr_orders:
+                i.show_order()
+
+    def show_menu(self):
+        self.menu.display_allitems()
+
+    def find_item(self, item_id):
+        return self.menu.find_item(item_id)
+
+    def display_rest(self):
+
+        print("RESTAURANT NAME :", self.name, "   ", "LOCATION :", self.address,
+              "    ", "RATING :", "N/A" if (self.rating == 0) else self.rating, "    ", "NO OF RATINGS :", self.no_of_ratings, "    ", "STATUS :", self.status)
